@@ -35,10 +35,10 @@ id serial primary key,
 	suit_color varchar(100),
 	temp_min integer,
 	temp_max integer,
-	suite_size text
+	suit_size text
 );
 
-insert into space_suits (suit_name, suit_color, temp_min, temp_max, suite_size) values ('Soft Suit', 'Sky Blue', 4,97, 'Medium'),('Hardshell Suit', 'White', 3,83, 'Medium'),('Hybrid Suit', 'Red', 5,89, 'Large'),('Skintight Suit', 'Black', 3,79, 'Small');
+insert into space_suits (suit_name, suit_color, temp_min, temp_max, suit_size) values ('Soft Suit', 'Sky Blue', 4,97, 'Medium'),('Hardshell Suit', 'White', 3,83, 'Medium'),('Hybrid Suit', 'Red', 5,89, 'Large'),('Skintight Suit', 'Black', 3,79, 'Small');
 
 
 create table vaccines (
