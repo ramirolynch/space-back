@@ -30,12 +30,24 @@ routes.get("/trips", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+// this route gets trip information by id (useful to display the info of the trip for the user before booking)
 routes.get("/trips/:id", (req, res) => {
   db.oneOrNone(
     "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE trips.id = ${id}",
     { id: req.params.id }
   )
     .then((trips) => res.json(trips))
+    .catch((error) => console.log(error));
+});
+
+// this route gets the booked trips by the user id. You have to pass the user id through params
+
+routes.get("/bookedtrip/:id", (req, res) => {
+  db.oneOrNone(
+    "select users.id, users.first_name, users.last_name, users.vaccine_compliant, trips.departure_date, trips.arrival_date, trips.trip_time, transportation.company_name, transportation.price, locations.location_name, locations.distance, locations.unit_of_measure from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id join users on trips.id = users.trip_booked where users.id = ${id}",
+    { id: req.params.id }
+  )
+    .then((trip) => res.json(trip))
     .catch((error) => console.log(error));
 });
 
