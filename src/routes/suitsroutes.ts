@@ -66,55 +66,56 @@ routes.post("/suits", (req, res) => {
     .catch((error) => res.status(500).send(error));
 });
 
-// // deleting a trip by the id
-// routes.delete("/trips/:id", (req, res) => {
-//   db.many("select * from trips")
-//     .then((trips) => {
-//       let elem: any = trips.find((t) => t.id === +req.params.id);
+// deleting a suit by the id of the suit
 
-//       if (!elem) {
-//         res.status(404).json({ error: "Trip not found" });
-//       } else {
-//         db.none("delete from trips where id = ${id}", {
-//           id: +req.params.id,
-//         });
+routes.delete("/suits/:id", (req, res) => {
+  db.many("select * from space_suits")
+    .then((suits) => {
+      let elem: any = suits.find((s) => s.id === +req.params.id);
 
-//         res
-//           .status(200)
-//           .json({ message: `Trip with id ${+req.params.id} deleted` });
-//       }
-//     })
+      if (!elem) {
+        res.status(404).json({ error: "Space Suit not found" });
+      } else {
+        db.none("delete from space_suits where id = ${id}", {
+          id: +req.params.id,
+        });
 
-//     .catch((error) => console.log(error));
-// });
+        res
+          .status(200)
+          .json({ message: `Space Suit with id ${+req.params.id} deleted` });
+      }
+    })
 
-// // update trip by id
+    .catch((error) => console.log(error));
+});
 
-// routes.put("/trips/:id", (req, res) => {
-//   db.many("select * from trips")
-//     .then((trips) => {
-//       let elem: any = trips.find((t) => t.id === +req.params.id);
+// // update suit by id
 
-//       if (!elem) {
-//         res.status(404).json({ error: "Trip not found" });
-//       } else {
-//         db.none(
-//           "update trips set id=${id}, departure_date=${departure_date}, arrival_date=${arrival_date}, trip_time=${trip_time}, location_id=${location_id}, transportation_id=${transportation_id} where id = ${id}",
-//           {
-//             id: +req.params.id,
-//             departure_date: req.body.departure_date,
-//             arrival_date: req.body.arrival_date,
-//             trip_time: req.body.trip_time,
-//             location_id: req.body.location_id,
-//             transportation_id: req.body.transportation_id,
-//           }
-//         );
+routes.put("/suits/:id", (req, res) => {
+  db.many("select * from space_suits")
+    .then((suits) => {
+      let elem: any = suits.find((s) => s.id === +req.params.id);
 
-//         res.send(req.body);
-//       }
-//     })
+      if (!elem) {
+        res.status(404).json({ error: "Space Suit not found" });
+      } else {
+        db.none(
+          "update space_suits set id=${id}, suit_name=${suit_name}, suit_color=${suit_color}, temp_min=${temp_min}, temp_max=${temp_max}, suit_size=${suit_size} where id = ${id}",
+          {
+            id: +req.params.id,
+            suit_name: req.body.suit_name,
+            suit_color: req.body.suit_color,
+            temp_min: req.body.temp_min,
+            temp_max: req.body.temp_max,
+            suit_size: req.body.suit_size,
+          }
+        );
 
-//     .catch((error) => console.log(error));
-// });
+        res.send(req.body);
+      }
+    })
+
+    .catch((error) => console.log(error));
+});
 
 export default routes;
