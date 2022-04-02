@@ -26,7 +26,7 @@ create table trips (
 	transportation_id integer references transportation
 );
 
-insert into trips (departure_date,arrival_date,trip_time, location_id) values ('2022-04-15', '2022-04-20', 120, 1),('2022-04-20', '2022-04-27', 168, 2),('2022-05-01', '2022-05-10', 240, 3),('2022-05-15', '2022-05-30', 360, 4);
+insert into trips (departure_date,arrival_date,trip_time, location_id, transportation_id) values ('2022-04-15', '2022-04-20', 120, 1, 1),('2022-04-20', '2022-04-27', 168, 2,3),('2022-05-01', '2022-05-10', 240, 3,2),('2022-05-15', '2022-05-30', 360, 4,1);
 
 
 create table space_suits (
