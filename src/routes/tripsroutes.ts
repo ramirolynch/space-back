@@ -31,11 +31,14 @@ routes.get("/trips", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-// routes.get("/venues/:id", (req, res) => {
-//   db.oneOrNone("SELECT * FROM venues WHERE id = ${id}", { id: req.params.id })
-//     .then((todos) => res.json(todos))
-//     .catch((error) => console.log(error));
-// });
+routes.get("/trips/:id", (req, res) => {
+  db.oneOrNone(
+    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE trips.id = ${id}",
+    { id: req.params.id }
+  )
+    .then((trips) => res.json(trips))
+    .catch((error) => console.log(error));
+});
 
 // // adding a venue to the postgres table 'venues'
 // routes.post("/venues", (req, res) => {
