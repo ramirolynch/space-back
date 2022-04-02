@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 
 import authroutes from "./routes/authroutes";
+import tripsroutes from "./routes/tripsroutes";
 
 // creates an instance of an Express server
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/", authroutes);
+app.use("/", tripsroutes);
 
 // define the port
 const port = 3000;
