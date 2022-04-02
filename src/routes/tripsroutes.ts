@@ -15,12 +15,11 @@ const db = pg()({
 });
 
 const schema = Joi.object({
-  venue_name: Joi.string().min(1).max(200).required(),
-  description: Joi.string().min(1).max(500),
-  street_address: Joi.string().min(1).max(200),
-  city: Joi.string().min(1).max(150),
-  zip_code: Joi.string().min(1).max(11),
-  state_code: Joi.string().length(2),
+  departure_date: Joi.date(),
+  arrival_date: Joi.date(),
+  trip_time: Joi.number().integer(),
+  location_id: Joi.number().integer(),
+  transportation_id: Joi.number().integer(),
 });
 
 routes.get("/trips", (req, res) => {
@@ -40,96 +39,84 @@ routes.get("/trips/:id", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-// // adding a venue to the postgres table 'venues'
-// routes.post("/venues", (req, res) => {
-//   const newvenue = {
-//     venue_name: req.body.venue_name,
-//     description: req.body.description,
-//     street_address: req.body.street_address,
-//     city: req.body.city,
-//     zip_code: req.body.zip_code,
-//     state_code: req.body.state_code,
-//   };
-//   const valid = schema.validate(newvenue);
+// adding a trip to the postgres table 'trips'
+routes.post("/trips", (req, res) => {
+  const newtrip = {
+    departure_date: req.body.departure_date,
+    arrival_date: req.body.arrival_date,
+    trip_time: req.body.trip_time,
+    location_id: req.body.location_id,
+    transportation_id: req.body.transportation_id,
+  };
+  const valid = schema.validate(newtrip);
 
-//   if (valid.error) {
-//     return res.status(400).send(valid.error);
-//   }
+  if (valid.error) {
+    return res.status(400).send(valid.error);
+  }
 
-//   db.one(
-//     "INSERT INTO venues(venue_name, description, street_address, city, zip_code, state_code) VALUES(${venue_name}, ${description}, ${street_address}, ${city}, ${zip_code}, ${state_code}) returning id",
-//     newvenue
-//   )
-//     .then((id) => {
-//       return db.oneOrNone("SELECT * FROM venues WHERE id = ${id}", {
-//         id: id.id,
-//       });
-//     })
-//     .then((data) => res.json(data))
+  db.one(
+    "INSERT INTO trips(departure_date, arrival_date, trip_time, location_id, transportation_id) VALUES(${departure_date}, ${arrival_date}, ${trip_time}, ${location_id}, ${transportation_id}) returning id",
+    newtrip
+  )
+    .then((id) => {
+      return db.oneOrNone("SELECT * FROM trips WHERE id = ${id}", {
+        id: id.id,
+      });
+    })
+    .then((data) => res.json(data))
 
-//     .catch((error) => res.status(500).send(error));
-// });
+    .catch((error) => res.status(500).send(error));
+});
 
-// // deleting a venue by the id
-// routes.delete("/venues/:id", (req, res) => {
-//   db.many("select * from venues")
-//     .then((venue) => {
-//       let elem: any = venue.find((e) => e.id === +req.params.id);
+// deleting a trip by the id
+routes.delete("/trips/:id", (req, res) => {
+  db.many("select * from trips")
+    .then((trips) => {
+      let elem: any = trips.find((t) => t.id === +req.params.id);
 
-//       if (!elem) {
-//         res.status(404).json({ error: "Venue not found" });
-//       } else {
-//         db.none("delete from venues where id = ${id}", {
-//           id: +req.params.id,
-//         });
+      if (!elem) {
+        res.status(404).json({ error: "Trip not found" });
+      } else {
+        db.none("delete from trips where id = ${id}", {
+          id: +req.params.id,
+        });
 
-//         res
-//           .status(200)
-//           .json({ message: `Venue with id ${+req.params.id} deleted` });
-//       }
-//     })
+        res
+          .status(200)
+          .json({ message: `Trip with id ${+req.params.id} deleted` });
+      }
+    })
 
-//     .catch((error) => console.log(error));
-// });
+    .catch((error) => console.log(error));
+});
 
-// routes.put("/venues/:id", (req, res) => {
-//   db.many("select * from venues")
-//     .then((newvenue) => {
-//       let elem: any = newvenue.find((e) => e.id === +req.params.id);
+// update trip by id
 
-//       if (!elem) {
-//         res.status(404).json({ error: "Venue not found" });
-//       } else {
-//         db.none(
-//           "update venues set id=${id}, venue_name=${venue_name}, description=${description}, street_address=${street_address}, city=${city}, zip_code=${zip_code}, state_code=${state_code} where id = ${id}",
-//           {
-//             id: +req.params.id,
-//             venue_name: req.body.venue_name,
-//             description: req.body.description,
-//             street_address: req.body.street_address,
-//             city: req.body.city,
-//             zip_code: req.body.zip_code,
-//             state_code: req.body.state_code,
-//           }
-//         );
+routes.put("/trips/:id", (req, res) => {
+  db.many("select * from trips")
+    .then((trips) => {
+      let elem: any = trips.find((t) => t.id === +req.params.id);
 
-//         res.send(req.body);
-//       }
-//     })
+      if (!elem) {
+        res.status(404).json({ error: "Trip not found" });
+      } else {
+        db.none(
+          "update trips set id=${id}, departure_date=${departure_date}, arrival_date=${arrival_date}, trip_time=${trip_time}, location_id=${location_id}, transportation_id=${transportation_id} where id = ${id}",
+          {
+            id: +req.params.id,
+            departure_date: req.body.departure_date,
+            arrival_date: req.body.arrival_date,
+            trip_time: req.body.trip_time,
+            location_id: req.body.location_id,
+            transportation_id: req.body.transportation_id,
+          }
+        );
 
-//     .catch((error) => console.log(error));
-// });
+        res.send(req.body);
+      }
+    })
 
-// routes.get("/mics", (req, res) => {
-//   db.manyOrNone(
-//     `
-//     select miclist.mic_name, comedians.first_name, comedians.last_name, venues.venue_name from miclist
-//     join comedians on miclist.comedian_id = comedians.id
-//     join venues on miclist.venue_id = venues.id;
-//     `
-//   )
-//     .then((data) => res.json(data))
-//     .catch((error) => console.log(error));
-// });
+    .catch((error) => console.log(error));
+});
 
 export default routes;
