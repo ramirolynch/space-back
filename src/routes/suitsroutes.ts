@@ -33,7 +33,7 @@ routes.get("/suits/:id", (req, res) => {
   db.oneOrNone("select * from space_suits WHERE id = ${id}", {
     id: req.params.id,
   })
-    .then((trips) => res.json(trips))
+    .then((suit) => res.json(suit))
     .catch((error) => console.log(error));
 });
 

@@ -31,7 +31,7 @@ routes.get("/locations/:id", (req, res) => {
   db.oneOrNone("select * from locations WHERE id = ${id}", {
     id: req.params.id,
   })
-    .then((trips) => res.json(trips))
+    .then((location) => res.json(location))
     .catch((error) => console.log(error));
 });
 

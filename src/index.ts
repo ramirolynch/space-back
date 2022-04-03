@@ -8,6 +8,7 @@ import authroutes from "./routes/authroutes";
 import tripsroutes from "./routes/tripsroutes";
 import suitsroutes from "./routes/suitsroutes";
 import locationsroutes from "./routes/locationsroutes";
+import transportationroutes from "./routes/transportationroutes";
 
 // creates an instance of an Express server
 const app = express();
@@ -22,6 +23,7 @@ app.use("/", authroutes);
 app.use("/", tripsroutes);
 app.use("/", suitsroutes);
 app.use("/", locationsroutes);
+app.use("/", transportationroutes);
 
 // define the port
 const port = 3000;
