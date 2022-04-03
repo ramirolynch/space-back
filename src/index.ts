@@ -9,7 +9,7 @@ import tripsroutes from "./routes/tripsroutes";
 import suitsroutes from "./routes/suitsroutes";
 import locationsroutes from "./routes/locationsroutes";
 import transportationroutes from "./routes/transportationroutes";
-
+import vaccinesroutes from "./routes/vaccinesroutes";
 // creates an instance of an Express server
 const app = express();
 
@@ -24,6 +24,7 @@ app.use("/", tripsroutes);
 app.use("/", suitsroutes);
 app.use("/", locationsroutes);
 app.use("/", transportationroutes);
+app.use("/", vaccinesroutes);
 
 // define the port
 const port = 3000;
