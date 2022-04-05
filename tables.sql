@@ -5,7 +5,7 @@ id serial primary key,
 	location_name text,
 	distance integer,
     unit_of_measure text,
-	space_suit_name text,
+	space_suit_name text
 );
 
 insert into locations(location_name, distance, unit_of_measure, space_suit_name) values('North Mars', 168, 'million miles', 'Hardshell Suit'),('East Mars', 172, 'million miles', 'Skintight Suit'),('South Mars', 156, 'million miles', 'Hybrid Suit'),('West Mars', 189, 'million miles', 'Soft Suit');
