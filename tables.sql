@@ -4,10 +4,11 @@ create table locations (
 id serial primary key,
 	location_name text,
 	distance integer,
-    unit_of_measure text
+    unit_of_measure text,
+	space_suit_name text,
 );
 
-insert into locations(location_name, distance, unit_of_measure) values('North Mars', 168, 'million miles'),('East Mars', 172, 'million miles'),('South Mars', 156, 'million miles'),('West Mars', 189, 'million miles');
+insert into locations(location_name, distance, unit_of_measure, space_suit_name) values('North Mars', 168, 'million miles', 'Hardshell Suit'),('East Mars', 172, 'million miles', 'Skintight Suit'),('South Mars', 156, 'million miles', 'Hybrid Suit'),('West Mars', 189, 'million miles', 'Soft Suit');
 
 create table transportation (
 id serial primary key,
@@ -35,10 +36,11 @@ id serial primary key,
 	suit_color varchar(100),
 	temp_min integer,
 	temp_max integer,
-	suit_size text
+	suit_size text,
+	location_id integer
 );
 
-insert into space_suits (suit_name, suit_color, temp_min, temp_max, suit_size) values ('Soft Suit', 'Sky Blue', 4,97, 'Medium'),('Hardshell Suit', 'White', 3,83, 'Medium'),('Hybrid Suit', 'Red', 5,89, 'Large'),('Skintight Suit', 'Black', 3,79, 'Small');
+insert into space_suits (suit_name, suit_color, temp_min, temp_max, suit_size, location_id) values ('Soft Suit', 'Sky Blue', 4,97, 'Medium',2),('Hardshell Suit', 'White', 3,83, 'Medium',1),('Hybrid Suit', 'Red', 5,89, 'Large',3),('Skintight Suit', 'Black', 3,79, 'Small',1);
 
 
 create table vaccines (
