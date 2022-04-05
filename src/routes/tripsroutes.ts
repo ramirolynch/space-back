@@ -20,11 +20,12 @@ const schema = Joi.object({
   trip_time: Joi.number().integer(),
   location_id: Joi.number().integer(),
   transportation_id: Joi.number().integer(),
+  space_suit_name: Joi.string().min(1).max(100),
 });
 
 routes.get("/trips", (req, res) => {
   db.manyOrNone(
-    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id;"
+    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure, locations.space_suit_name from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id;"
   )
     .then((data) => res.json(data))
     .catch((error) => console.log(error));
@@ -33,7 +34,7 @@ routes.get("/trips", (req, res) => {
 // this route gets trip information by id (useful to display the info of the trip for the user before booking)
 routes.get("/trips/:id", (req, res) => {
   db.oneOrNone(
-    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE trips.id = ${id}",
+    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure, locations.space_suit_name from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE trips.id = ${id}",
     { id: req.params.id }
   )
     .then((trips) => res.json(trips))
@@ -59,6 +60,7 @@ routes.post("/trips", (req, res) => {
     trip_time: req.body.trip_time,
     location_id: req.body.location_id,
     transportation_id: req.body.transportation_id,
+    space_suit_name: req.body.space_suit_name,
   };
   const valid = schema.validate(newtrip);
 
@@ -67,7 +69,7 @@ routes.post("/trips", (req, res) => {
   }
 
   db.one(
-    "INSERT INTO trips(departure_date, arrival_date, trip_time, location_id, transportation_id) VALUES(${departure_date}, ${arrival_date}, ${trip_time}, ${location_id}, ${transportation_id}) returning id",
+    "INSERT INTO trips(departure_date, arrival_date, trip_time, location_id, transportation_id, space_suit_name) VALUES(${departure_date}, ${arrival_date}, ${trip_time}, ${location_id}, ${transportation_id}, ${space_suit_name}) returning id",
     newtrip
   )
     .then((id) => {
