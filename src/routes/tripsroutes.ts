@@ -42,11 +42,11 @@ routes.get("/trips/:id", (req, res) => {
 });
 
 routes.get("/trips/:company_name/:suit_name/:location_name", (req, res) => {
-  db.oneOrNone(
+  db.manyOrNone(
     "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure, locations.space_suit_name from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE transportation.company_name = ${company_name} AND locations.space_suit_name = ${suit_name} AND locations.location_name = ${location_name}",
     {
-      id: req.params.company_name,
-      suit_name: req.params.suit_name,
+      company_name: req.params.company_name,
+      space_suit_name: req.params.suit_name,
       location_name: req.params.location_name,
     }
   )
