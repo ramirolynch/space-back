@@ -31,6 +31,19 @@ routes.get("/trips", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+routes.get("/trips/search", (req, res) => {
+  db.manyOrNone(
+    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure, locations.space_suit_name from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE transportation.company_name = ${company_name} AND locations.space_suit_name = ${suit_name} AND locations.location_name = ${location_name}",
+    {
+      company_name: req.query.company_name,
+      suit_name: req.query.suit_name,
+      location_name: req.query.location_name,
+    }
+  )
+    .then((trips) => res.json(trips))
+    .catch((error) => console.log(error));
+});
+
 // this route gets trip information by id (useful to display the info of the trip for the user before booking)
 routes.get("/trips/:id", (req, res) => {
   db.oneOrNone(
@@ -41,18 +54,7 @@ routes.get("/trips/:id", (req, res) => {
     .catch((error) => console.log(error));
 });
 
-routes.get("/trips/:company_name/:suit_name/:location_name", (req, res) => {
-  db.manyOrNone(
-    "select trips.id,trips.departure_date,trips.arrival_date,trips.trip_time,transportation.company_name, transportation.price, locations.location_name, locations.distance,locations.unit_of_measure, locations.space_suit_name from trips join transportation on trips.transportation_id = transportation.id join locations on trips.location_id = locations.id WHERE transportation.company_name = ${company_name} AND locations.space_suit_name = ${suit_name} AND locations.location_name = ${location_name}",
-    {
-      company_name: req.params.company_name,
-      space_suit_name: req.params.suit_name,
-      location_name: req.params.location_name,
-    }
-  )
-    .then((trips) => res.json(trips))
-    .catch((error) => console.log(error));
-});
+// WHERE transportation.company_name = ${company_name} AND locations.space_suit_name = ${suit_name} AND locations.location_name = ${location_name}"
 
 // this route gets the booked trips by the user id. You have to pass the user id through params
 
