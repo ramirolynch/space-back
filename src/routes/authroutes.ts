@@ -70,4 +70,13 @@ routes.get("/users", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+//user by id
+routes.get("/users/:id", (req, res) => {
+  db.oneOrNone("select * from users WHERE id = ${id}", {
+    id: req.params.id,
+  })
+    .then((location) => res.json(location))
+    .catch((error) => console.log(error));
+});
+
 export default routes;
