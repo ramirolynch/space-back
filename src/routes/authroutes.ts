@@ -79,4 +79,29 @@ routes.get("/users/:id", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+//user by id
+
+routes.put("/userbooked/:id", (req, res) => {
+  db.many("select * from users")
+    .then((userarr) => {
+      let elem: any = userarr.find((u) => u.id === +req.params.id);
+
+      if (!elem) {
+        res.status(404).json({ error: "User not found" });
+      } else {
+        db.none(
+          "update users set trip_booked=${trip_booked} where id = ${id}",
+          {
+            id: +req.params.id,
+            trip_booked: req.body.trip_booked,
+          }
+        );
+
+        res.send(req.body);
+      }
+    })
+
+    .catch((error) => console.log(error));
+});
+
 export default routes;
