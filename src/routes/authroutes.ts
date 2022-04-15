@@ -1,4 +1,5 @@
 // require the express module
+require("dotenv").config();
 import express from "express";
 import pg from "pg-promise";
 const Joi = require("joi");
@@ -6,11 +7,11 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const db = pg()({
-  host: "localhost",
+  host: process.env.PG_HOST,
   port: 5432,
-  user: "postgres",
-  password: "casapuerta",
-  database: "SpaceTravel",
+  user: process.env.PG_USER,
+  password: process.env.PG_PASSWORD,
+  database: process.env.PG_DATABASE,
 });
 
 // create a new Router object
