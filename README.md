@@ -1,8 +1,8 @@
 # Mars Travel App
 
 This is a repository for a Grand Circus Full Stack Javascript Bootcamp Group's Final Project.
-This is the server repository. View the client repository[here](https://github.com/ramirolynch/space-front).
-The group consists of Dana Killeen, Ramiro Lynch and Sudha Vallabhapurapu.
+This is the server repository. View the client repository [here](https://github.com/ramirolynch/space-front).
+The group consists of [Dana Killeen](https://github.com/lavendermoose/), [Ramiro Lynch](https://github.com/ramirolynch) and [Sudha Vallabhapurapu](https://github.com/sudhasew).
 
 # Project Description
 
